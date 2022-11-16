@@ -2,6 +2,7 @@ package services;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ import utils.MyDB_Connection;
 
 @ManagedBean(name = "personservice")
 @ViewScoped
-public class PersonService  {
+public class PersonService implements Serializable {
 private  MyDB_Connection db=new MyDB_Connection();
  Connection con=null;
  public List<Person> getPersons() throws SQLException{
@@ -45,11 +46,14 @@ private  MyDB_Connection db=new MyDB_Connection();
                 String email=rs.getString("email");
                 String name=rs.getString("name");
                 String sex=rs.getString("sex");
+                Date date=rs.getDate("date");
+                
                 Person p=new Person();
                 p.setId(id);
                 p.setName(name);
                 p.setEmail(name);
                 p.setSex(sex);
+                p.setDate(date);
                 persons.add(p);
             }
             return persons;
@@ -66,11 +70,12 @@ public void create(Person person) throws SQLException{
     Connection con=null;
     try{
         con=db.getConnection();
-        String query="insert into persons(email,name,sex) values(?,?,?)";
+        String query="insert into persons(email,name,sex,date) values(?,?,?,?)";
         PreparedStatement ps=con.prepareStatement(query);
         ps.setString(1, person.getEmail());
         ps.setString(2, person.getName());
         ps.setString(3, person.getSex());
+        ps.setDate(4, person.getDate());
         ps.execute();
     }catch(SQLException e){
         System.out.println(e);

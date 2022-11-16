@@ -1,31 +1,31 @@
-<ui:composition template="template.xhtml"
+<ui:composition 
         xmlns="http://www.w3.org/1999/xhtml"
        xmlns:p="http://primefaces.org/ui"
        xmlns:h="http://xmlns.jcp.org/jsf/html"
        xmlns:f="http://xmlns.jcp.org/jsf/core"
        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
-    <ui:define name="navigation"> 
-    <h:form>
-        <p:menubar>
-            <p:menuitem value="PersonAPI" url="index.xhtml" onclick="" />	
-	</p:menubar></h:form>
-    
-    </ui:define>
+ 
    
-        <ui:define name="content">
         <center>
+           
             <h:form>
         <p:commandButton value="ADD" type="button" onclick="PF('dlgAdd').show();" /> 
         </h:form>
-            
-            <!-- dialog starts here -->
-            <!-- dialog ends starts here -->
-                   
+
         <br/>
-        <p:outputLabel value="Available People"></p:outputLabel>        
+        <h:form>
+        <p:outputLabel value="Available People"></p:outputLabel>  
+        <br/>
+        <p:outputLabel value="Start Date"></p:outputLabel>
+        <p:inputText value="#{personController.start_date}"></p:inputText>
+        <p:outputLabel value="End Date"></p:outputLabel>
+        <p:inputText value="#{personController.end_date}"></p:inputText>
+        <p:commandButton value="Search" action="#{personController.search6()}"></p:commandButton>
+        </h:form>
         <h:form>
             <p:growl id="msgs" showDetail="true"/>
-            <p:dataTable id="persons1" var="person" value="#{personController.persons}" editable="true" >
+            
+            <p:dataTable id="persons1" var="person" value="#{personController.searchItems}" editable="true" >
                 <p:ajax event="rowEdit" listener="#{personController.onRowEdit}"   />
                 <p:ajax event="rowEditCancel" listener="#{personController.onRowCancel}" />
                 <p:column headerText="User ID">
@@ -60,12 +60,24 @@
                         </p:column>
                 
                   <p:column headerText="Sex">
-                            <p:cellEditor>
+                            <p:cellEditor >
                                 <f:facet name="output">
                                     <h:outputText value="#{person.sex}"/>
                                 </f:facet>
                                 <f:facet name="input" >
                                     <p:inputText  value="#{person.sex}" style="width:100%"></p:inputText>
+                                </f:facet>
+                            
+                            </p:cellEditor>
+                        </p:column>
+                
+                     <p:column headerText="Date">
+                            <p:cellEditor >
+                                <f:facet name="output">
+                                    <h:outputText value="#{person.date}"/>
+                                </f:facet>
+                                <f:facet name="input" >
+                                    <p:inputText  value="#{person.date}" style="width:100%"></p:inputText>
                                 </f:facet>
                             
                             </p:cellEditor>
@@ -81,12 +93,12 @@
             </p:column>
 
                  <p:column >
-            <p:rowEditor />
+            <p:rowEditor/>
         </p:column>
         </p:dataTable>   
         </h:form>
                <br/>
         </center>
-            </ui:define>
+           
       </ui:composition>
  

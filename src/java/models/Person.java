@@ -2,6 +2,7 @@
 package models;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Objects;
 
 /**
@@ -14,6 +15,16 @@ public class Person implements Serializable{
     private String name;
     private String email;
     private String sex;
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 
     public String getSex() {
         return sex;
@@ -58,8 +69,9 @@ public class Person implements Serializable{
 
     @Override
     public String toString() {
-        return "Person{" + "id=" + id + ", name=" + name + ", email=" + email + ", sex=" + sex + '}';
+        return "Person{" + "id=" + id + ", name=" + name + ", email=" + email + ", sex=" + sex + ", date=" + date + '}';
     }
+
 
 
     

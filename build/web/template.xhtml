@@ -13,12 +13,14 @@
     <h:outputText value="Input New User" />
             <h:form>
             
-            <p:outputLabel value="Input Name"></p:outputLabel>
+            <p:outputLabel value="Name"></p:outputLabel>
             <p:inputText value="#{personController.name}"></p:inputText>
-            <p:outputLabel value="Input Email"></p:outputLabel>
+            <p:outputLabel value="Email"></p:outputLabel>
             <p:inputText value="#{personController.email}"></p:inputText>
-            <p:outputLabel value="Input Sex"></p:outputLabel>
+            <p:outputLabel value="Sex"></p:outputLabel>
             <p:inputText value="#{personController.sex}"></p:inputText>
+            <p:outputLabel value="Date"></p:outputLabel>
+            <p:inputText value="#{personController.date_temp}"></p:inputText>
             <p:commandButton action="#{personController.create()}" value="Submit" ></p:commandButton>
         </h:form>
 </p:dialog>   
@@ -31,13 +33,13 @@
        
         <p:layoutUnit position="west" resizable="true" size="250" minSize="200" maxSize="250">
            <ui:insert name="navigation">
-               Navigation Section
+               <ui:include src="leftpannel.xhtml"></ui:include>
             </ui:insert>
-        </p:layoutUnit>
+        </p:layoutUnit> 
 
         <p:layoutUnit position="center" >
             <ui:insert name="content" >
-                Content section
+                <ui:include src="#{facepainter.centerContent}"></ui:include>
             </ui:insert>
         </p:layoutUnit>
  
