@@ -1,19 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui:composition 
-        xmlns="http://www.w3.org/1999/xhtml"
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
        xmlns:p="http://primefaces.org/ui"
        xmlns:h="http://xmlns.jcp.org/jsf/html"
-       xmlns:f="http://xmlns.jcp.org/jsf/core"
-       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" >  
- 
-   
+       xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Person Systems LTD</title>
+    </h:head>   
+    <h:body>
+  #{personController.searchItems}
         <center>
-           
+           <h:form>
+        <p:commandButton value="ADD" type="button" onclick="PF('dlgAdd').show();" /> 
+        </h:form>
+
+        <br/>
+        <h:form>
+       
+        </h:form>
+        
+        <h:form id="personform">
+      
+            <p:growl id="msgs" showDetail="true"/>
+             <p:outputLabel value="Available People"></p:outputLabel>  
+        <br/>
+        <p:outputLabel value="Start Date"></p:outputLabel>
+        <p:calendar value="#{personController.start_date}"></p:calendar>
+        <p:outputLabel value="End Date"></p:outputLabel>
+        
+        <p:calendar value="#{personController.end_date}"></p:calendar>
+        <p:commandButton value="Search" action="#{personController.search6()}"  update="persons1"></p:commandButton>
             
-        <h:form >
-            <p:growl  showDetail="true"/>
             
-            <p:dataTable var="person" value="#{personController.persons}" editable="true" >
+            
+            <p:dataTable id="persons1" var="person" value="#{personController.searchItems}" editable="true" >
                 <p:ajax event="rowEdit" listener="#{personController.onRowEdit}"  />
                 <p:ajax event="rowEditCancel" listener="#{personController.onRowCancel}"/>
                 <p:column headerText="User ID">
@@ -59,7 +80,7 @@
                  <p:column headerText="Dates">
                             <p:cellEditor >
                                 <f:facet name="output">
-                                    <h:outputText value="#{person.date}"/>
+                                    <h:outputText value="#{person.stringdate}"/>
                                 </f:facet>
                                 <f:facet name="input" >
                                     <p:inputText  value="#{person.stringdate}" style="width:100%"></p:inputText>
@@ -72,7 +93,7 @@
             <p:column headerText="Action">
                 
                 <p:commandButton value="Delete" action="#{personController.delete()}" ajax="false" >
-                <f:param name="delete" value="104"></f:param>
+                <f:param name="delete" value="#{person.id}"></f:param>
             </p:commandButton>
            
             </p:column>
@@ -84,5 +105,5 @@
         </h:form>
              
         </center>
-           
-      </ui:composition>
+    </h:body>
+</html>

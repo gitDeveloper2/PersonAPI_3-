@@ -27,7 +27,7 @@ public class Painter implements Serializable{
     }
     
     public void person(){
-    facepainter.setCenterContent("index.xhtml");
+    facepainter.setCenterContent("index7.xhtml");
     }
     
     public void clearhome(){

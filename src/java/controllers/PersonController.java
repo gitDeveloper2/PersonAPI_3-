@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +54,17 @@ public class PersonController implements Serializable{
     private String date_temp;
     private String start_date;
     private String end_date;
+    private String stringdate;
+
+    public String getStringdate() {
+        return stringdate;
+    }
+
+    public void setStringdate(String stringdate) {
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        this.stringdate=df.format(date);
+        //this.stringdate = stringdate;
+    }
 
     public Date getDate() {
         return date;
@@ -95,27 +107,11 @@ public class PersonController implements Serializable{
     public void setSearchItems(List<Person> searchItems) {
         this.searchItems = searchItems;
     }
+   
 public List<Person> getSearchItems(){
-    DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MMMM,d,YYYY", Locale.ENGLISH); 
-    java.sql.Date dateIn1;
-    java.sql.Date dateIn2;
-    try{
-//        date=df.parse(date_temp);
-            dateIn1=java.sql.Date.valueOf(start_date);
-            dateIn2=java.sql.Date.valueOf(end_date);
-            System.out.println(dateIn1+"date 1sdkfjks");
-       }catch(Exception e){
-           System.out.println(e); 
-       }
-        List<Person> list= persons.stream().filter((person)->{
-           
-            if  (person.getId()>=82){
-                return true;}
-            else
-            return false;
-        }).collect(Collectors.toList());
-        
-        searchItems=list;
+   List<Person> list=this.search6();
+    this.setSearchItems(list);
+    System.out.println("getSearchItems()"+list);
         return searchItems;
 }    
     
@@ -164,19 +160,46 @@ public List<Person> getSearchItems(){
   @ManagedProperty(value = "#{personservice}")
     private PersonService personService;
   private Map<String,Object> sessionMap=FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+
     @PostConstruct
     public void init() {
         try {
-            //        persons=new ArrayList<>();
-//        persons.add(new Person(1, "Angela"));
-//        persons.add(new Person(2, "Milo"));
-
-
-persons=personService.getPersons();
+            persons=personService.getPersons();
+            //start of search
+          
+   
+        //end of search
         } catch (SQLException ex) {
             Logger.getLogger(PersonController.class.getName()).log(Level.SEVERE, null, ex);
         }
+ 
     }
+    
+public List<Person> search6() {
+     
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        List<Person> list=new ArrayList<>();
+        try{
+        final java.sql.Date dateIn1 = new java.sql.Date(format.parse(start_date).getTime());
+        final java.sql.Date dateIn2 = new java.sql.Date(format.parse(end_date).getTime());
+
+        
+                list= persons.stream().filter((person)->{return (//person.getId()>100
+                person.getDate().after(dateIn1)
+                || 
+                person.getDate().equals(dateIn1)&&
+                person.getDate().before(dateIn2)||
+                person.getDate().equals(dateIn2)
+                );           }).collect(Collectors.toList());
+        searchItems=list;
+            setSearchItems(list);
+        System.out.println("search6()"+list);
+          }catch(Exception e){
+            
+        }
+    
+        return list;       
+}  
     public PersonController() {
     }
     
@@ -247,25 +270,25 @@ persons=personService.getPersons();
         //return "template?faces-redirect=true";
     }
     public  String delete() throws SQLException{
-        System.out.println("cadsfkdsfskller");
+        
         Map<String,String> params=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         int id=Integer.parseInt(params.get("delete"));
         personService.delete(id);
       
         return "template?faces-redirect=true";
     }
-    public String update(Person p) throws SQLException{
-        System.out.println(p);
-//    Map<String,String> params=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//    String id=params.get("update");
-   // Person p=new Person();
-//    p.setId(Integer.parseInt(id));
-//    p.setName(name);
-//        System.out.println("youg"+this.id)
-
-    personService.update(p);
-     return "template?faces-redirect=true";
-    }
+//    public String update(Person p) throws SQLException{
+//        System.out.println(p);
+////    Map<String,String> params=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+////    String id=params.get("update");
+//   // Person p=new Person();
+////    p.setId(Integer.parseInt(id));
+////    p.setName(name);
+////        System.out.println("youg"+this.id)
+//
+//    personService.update(p);
+//     return "template?faces-redirect=true";
+//    }
 //       public  String edit() throws SQLException{
 //            
 //           FacesContext fc=FacesContext.getCurrentInstance();
@@ -298,9 +321,11 @@ persons=personService.getPersons();
 //    }
 //}
         public void onRowEdit(RowEditEvent event) throws SQLException {
-        FacesMessage msg = new FacesMessage("Car Edited", event.getObject().toString());
+            
+            FacesMessage msg = new FacesMessage("Car Edited", event.getObject().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
         personService.update((Person) event.getObject());
+        
         
     }
      
@@ -319,29 +344,5 @@ public void reload(){
     
 }
 
-
-public void search6(){
-    System.out.println("jogoo road");
-    DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MMMM,d,YYYY", Locale.ENGLISH); 
-    java.sql.Date dateIn1;
-    java.sql.Date dateIn2;
-    try{
-//        date=df.parse(date_temp);
-            dateIn1=java.sql.Date.valueOf(start_date);
-            dateIn2=java.sql.Date.valueOf(end_date);
-            System.out.println(dateIn1+"date 1sdkfjks");
-       }catch(Exception e){
-           System.out.println(e); 
-       }
-        List<Person> list= persons.stream().filter((person)->{
-           
-            if  (person.getId()>=82){
-                return true;}
-            else
-            return false;
-        }).collect(Collectors.toList());
-        
-        searchItems=list;
-        
-}    
+  
 }

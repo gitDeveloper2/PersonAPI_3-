@@ -16,6 +16,15 @@ public class Person implements Serializable{
     private String email;
     private String sex;
     private Date date;
+    private String stringdate;
+
+    public String getStringdate() {
+        return stringdate;
+    }
+
+    public void setStringdate(String stringdate) {
+        this.stringdate = stringdate;
+    }
 
     public Date getDate() {
         return date;

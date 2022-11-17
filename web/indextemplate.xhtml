@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui:composition 
         xmlns="http://www.w3.org/1999/xhtml"
        xmlns:p="http://primefaces.org/ui"
@@ -9,11 +8,24 @@
    
         <center>
            
-            
+            <h:form>
+        <p:commandButton value="ADD" type="button" onclick="PF('dlgAdd').show();" /> 
+        </h:form>
+
+        <br/>
+        <h:form>
+        <p:outputLabel value="Available People"></p:outputLabel>  
+        <br/>
+        <p:outputLabel value="Start Date"></p:outputLabel>
+        <p:inputText value="#{personController.start_date}"></p:inputText>
+        <p:outputLabel value="End Date"></p:outputLabel>
+        <p:inputText value="#{personController.end_date}"></p:inputText>
+        <p:commandButton value="Search" action="#{personController.search6()}"></p:commandButton>
+        </h:form>
         <h:form >
-            <p:growl  showDetail="true"/>
+            <p:growl id="msgs" showDetail="true"/>
             
-            <p:dataTable var="person" value="#{personController.persons}" editable="true" >
+            <p:dataTable id="persons1" var="person" value="#{personController.searchItems}" editable="true" >
                 <p:ajax event="rowEdit" listener="#{personController.onRowEdit}"  />
                 <p:ajax event="rowEditCancel" listener="#{personController.onRowCancel}"/>
                 <p:column headerText="User ID">
@@ -59,7 +71,7 @@
                  <p:column headerText="Dates">
                             <p:cellEditor >
                                 <f:facet name="output">
-                                    <h:outputText value="#{person.date}"/>
+                                    <h:outputText value="#{person.stringdate}"/>
                                 </f:facet>
                                 <f:facet name="input" >
                                     <p:inputText  value="#{person.stringdate}" style="width:100%"></p:inputText>
@@ -72,7 +84,7 @@
             <p:column headerText="Action">
                 
                 <p:commandButton value="Delete" action="#{personController.delete()}" ajax="false" >
-                <f:param name="delete" value="104"></f:param>
+                <f:param name="delete" value="#{person.id}"></f:param>
             </p:commandButton>
            
             </p:column>

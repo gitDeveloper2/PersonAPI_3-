@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,6 +55,9 @@ private  MyDB_Connection db=new MyDB_Connection();
                 p.setEmail(name);
                 p.setSex(sex);
                 p.setDate(date);
+                    SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+                 p.setStringdate(df.format(date));
+                
                 persons.add(p);
             }
             return persons;

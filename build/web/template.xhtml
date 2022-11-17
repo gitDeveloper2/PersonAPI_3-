@@ -6,10 +6,11 @@
        xmlns:ui="http://java.sun.com/jsf/facelets"
        xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Person Systems LTD</title>
+        <title>Mspace</title>
     </h:head>   
     <h:body>
-      <p:dialog header="New User" widgetVar="dlgAdd" modal="true" height="100">
+        <!-- comment -->
+            <p:dialog header="New User" widgetVar="dlgAdd" modal="true" height="100">
     <h:outputText value="Input New User" />
             <h:form>
             
@@ -23,26 +24,29 @@
             <p:inputText value="#{personController.date_temp}"></p:inputText>
             <p:commandButton action="#{personController.create()}" value="Submit" ></p:commandButton>
         </h:form>
-</p:dialog>   
-         
-   <p:layout style="min-width:400px;min-height:590px;">
+</p:dialog> 
+        <!-- comment -->
+        
+        <p:layout>
+              <p:layoutUnit position="north">
+                  <p:graphicImage value="/images/mspace.png"></p:graphicImage>
+            </p:layoutUnit>
             
-        <p:layoutUnit position="north" resizable="false" size="130">
-                <p:graphicImage value="/images/mspace.png" style="margin: auto; display: block"></p:graphicImage>
-        </p:layoutUnit>
-       
-        <p:layoutUnit position="west" resizable="true" size="250" minSize="200" maxSize="250">
-           <ui:insert name="navigation">
-               <ui:include src="leftpannel.xhtml"></ui:include>
+            <p:layoutUnit position="west">
+                <ui:insert name="content" >
+                <ui:include src="/west.xhtml">old</ui:include>
             </ui:insert>
-        </p:layoutUnit> 
+            </p:layoutUnit>
+           
+            <p:layoutUnit position="center">
+                <ui:insert name="content" >
+                <ui:include src="#{facepainter.centerContent}">old</ui:include>
+            </ui:insert>
+            </p:layoutUnit>
+            
+        </p:layout>
 
-        <p:layoutUnit position="center" >
-            <ui:insert name="content" >
-                <ui:include src="#{facepainter.centerContent}"></ui:include>
-            </ui:insert>
-        </p:layoutUnit>
- 
- </p:layout>
+            
+    
     </h:body>
 </html>
