@@ -14,8 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.SessionScoped;
+
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 import models.Person;
@@ -29,7 +30,7 @@ import utils.MyDB_Connection;
 //@ApplicationScoped
 
 @ManagedBean(name = "personservice")
-@ViewScoped
+@SessionScoped
 public class PersonService implements Serializable {
 private  MyDB_Connection db=new MyDB_Connection();
  Connection con=null;

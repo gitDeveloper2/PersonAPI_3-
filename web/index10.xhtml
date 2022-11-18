@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Person Systems LTD</title>
+    </h:head>   
+    <h:body>
+  #{personController.searchItems}
+        <center>
+           <h:form>
+        <p:commandButton value="ADD" type="button" onclick="PF('dlgAdd').show();" /> 
+        </h:form>
+
+        <br/>
+        <h:form>
+       
+        </h:form>
+        
+        <h:form id="personform">
+      
+            <p:growl id="msgs" showDetail="true"/>
+             <p:outputLabel value="Available People"></p:outputLabel>  
+        <br/>
+        <p:outputLabel value="Start Date"></p:outputLabel>
+        <p:calendar value="#{personController.start_date}" navigator="true"></p:calendar>
+        <p:outputLabel value="End Date"></p:outputLabel>
+        <p:calendar value="#{personController.ender_date}" navigator="true"></p:calendar>
+        <p:commandButton value="Search" action="#{personController.search6()}"  update="persons1"></p:commandButton>
+            
+            
+            
+        <p:dataTable id="persons1" var="person" value="#{personController.persons}" editable="true" >
+                <p:ajax event="rowEdit" listener="#{personController.onRowEdit}"  />
+                <p:ajax event="rowEditCancel" listener="#{personController.onRowCancel}"/>
+                <p:column headerText="User ID" sortBy="#{person.id}">
+                            <h:outputText value="#{person.id}"/>
+
+                       </p:column>
+
+                <p:column headerText="User Name" sortBy="#{person.name}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{person.name}"/>
+                                </f:facet>
+                                <f:facet name="input" >
+                                    <p:inputText  value="#{person.name}" style="width:100%"></p:inputText>
+                                </f:facet>
+                            
+                            </p:cellEditor>
+                        </p:column>
+                  
+                        <p:column headerText="Email">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{person.email}"/>
+                                </f:facet>
+                                <f:facet name="input" >
+                                    <p:inputText  value="#{person.email}" style="width:100%"></p:inputText>
+                                </f:facet>
+                            
+                            </p:cellEditor>
+                        </p:column>
+                  <p:column headerText="Sex">
+                            <p:cellEditor >
+                                <f:facet name="output">
+                                    <h:outputText value="#{person.sex}"/>
+                                </f:facet>
+                                <f:facet name="input" >
+                                    <p:inputText  value="#{person.sex}" style="width:100%"></p:inputText>
+                                </f:facet>
+                            
+                            </p:cellEditor>
+                        </p:column>
+                
+                 <p:column headerText="Dates">
+                            <p:cellEditor >
+                                <f:facet name="output">
+                                    <h:outputText value="#{person.stringdate}"/>
+                                </f:facet>
+                                <f:facet name="input" >
+                                    <p:inputText  value="#{person.stringdate}" style="width:100%"></p:inputText>
+                                </f:facet>
+                            
+                            </p:cellEditor>
+                        </p:column>
+                
+                
+            <p:column headerText="Action">
+                
+                <p:commandButton value="Delete" action="#{personController.delete()}" ajax="false" >
+                <f:param name="delete" value="#{person.id}"></f:param>
+            </p:commandButton>
+           
+            </p:column>
+
+                 <p:column >
+            <p:rowEditor/>
+        </p:column>
+        </p:dataTable>   
+        </h:form>
+             
+        </center>
+    </h:body>
+</html>

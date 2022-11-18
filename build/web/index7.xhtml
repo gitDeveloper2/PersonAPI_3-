@@ -19,30 +19,41 @@
         <h:form>
        
         </h:form>
-        
+          
         <h:form id="personform">
       
             <p:growl id="msgs" showDetail="true"/>
+              <p:commandButton value="PDF" styleClass="mr-2 mb-2 ui-button-outlined" ajax="false">
+                    <p:dataExporter type="xls" target="persons1" fileName="products" pageOnly="true" />
+                </p:commandButton>
+          <p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined" ajax="false">
+                    <p:dataExporter type="xls" target="persons1" fileName="products" pageOnly="true"/>
+                </p:commandButton>
+
+                <p:commandButton value="XLSX" styleClass="mr-2 mb-2 ui-button-outlined" ajax="false">
+                    <p:dataExporter type="xlsxstream" target="persons1" fileName="products" pageOnly="true"/>
+                </p:commandButton> 
+            
+            
+            
+            
              <p:outputLabel value="Available People"></p:outputLabel>  
         <br/>
         <p:outputLabel value="Start Date"></p:outputLabel>
-        <p:calendar value="#{personController.start_date}"></p:calendar>
+        <p:calendar value="#{personController.start_date}" navigator="true"></p:calendar>
         <p:outputLabel value="End Date"></p:outputLabel>
-        
-        <p:calendar value="#{personController.end_date}"></p:calendar>
-        <p:commandButton value="Search" action="#{personController.search6()}"  update="persons1"></p:commandButton>
+        <p:calendar value="#{personController.ender_date}" navigator="true"></p:calendar>
+        <p:commandButton value="Search" action="#{personController.search6()}"  update="persons1" ></p:commandButton>
             
-            
-            
-            <p:dataTable id="persons1" var="person" value="#{personController.searchItems}" editable="true" >
+        <p:dataTable id="persons1" var="person" value="#{personController.searchItems}" editable="true" sortMode="single">
                 <p:ajax event="rowEdit" listener="#{personController.onRowEdit}"  />
                 <p:ajax event="rowEditCancel" listener="#{personController.onRowCancel}"/>
-                <p:column headerText="User ID">
+                <p:column headerText="User ID" >
                             <h:outputText value="#{person.id}"/>
 
                        </p:column>
 
-                        <p:column headerText="User Name">
+                <p:column headerText="User Name"  sortBy="#{person.name}">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{person.name}"/>
@@ -54,7 +65,7 @@
                             </p:cellEditor>
                         </p:column>
                   
-                        <p:column headerText="Email">
+                <p:column headerText="Email" >
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{person.email}"/>
@@ -65,7 +76,7 @@
                             
                             </p:cellEditor>
                         </p:column>
-                  <p:column headerText="Sex">
+                <p:column headerText="Sex" >
                             <p:cellEditor >
                                 <f:facet name="output">
                                     <h:outputText value="#{person.sex}"/>
@@ -77,7 +88,7 @@
                             </p:cellEditor>
                         </p:column>
                 
-                 <p:column headerText="Dates">
+                <p:column headerText="Dates" >
                             <p:cellEditor >
                                 <f:facet name="output">
                                     <h:outputText value="#{person.stringdate}"/>

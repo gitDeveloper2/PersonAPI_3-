@@ -18,12 +18,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 
 import javax.enterprise.inject.spi.Bean;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -31,6 +31,12 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -52,9 +58,31 @@ public class PersonController implements Serializable{
     private String sex;
     private java.sql.Date date;
     private String date_temp;
-    private String start_date;
-    private String end_date;
+    private java.util.Date start_date;
+    private java.util.Date ender_date;
     private String stringdate;
+
+    public java.sql.Date toSqlDate(java.util.Date date){
+       return new java.sql.Date(date.getTime());
+    }
+    public java.util.Date getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(java.util.Date start_date) {
+        this.start_date = start_date;
+    }
+
+    public java.util.Date getEnder_date() {
+        return ender_date;
+    }
+
+    public void setEnder_date(java.util.Date ender_date) {
+        this.ender_date = ender_date;
+    }
+
+    
+    
 
     public String getStringdate() {
         return stringdate;
@@ -86,21 +114,21 @@ public class PersonController implements Serializable{
 
    
 
-    public String getStart_date() {
-        return start_date;
-    }
-
-    public void setStart_date(String start_date) {
-        this.start_date = start_date;
-    }
-
-    public String getEnd_date() {
-        return end_date;
-    }
-
-    public void setEnd_date(String end_date) {
-        this.end_date = end_date;
-    }
+//    public String getStart_date() {
+//        return start_date;
+//    }
+//
+//    public void setStart_date(String start_date) {
+//        this.start_date = start_date;
+//    }
+//
+//    public String getEnd_date() {
+//        return end_date;
+//    }
+//
+//    public void setEnd_date(String end_date) {
+//        this.end_date = end_date;
+//    }
     private List<Person> searchItems;
 
  
@@ -109,10 +137,15 @@ public class PersonController implements Serializable{
     }
    
 public List<Person> getSearchItems(){
-   List<Person> list=this.search6();
+    if(searchItems==null||searchItems !=null){
+         List<Person> list=this.search6();
     this.setSearchItems(list);
-    System.out.println("getSearchItems()"+list);
         return searchItems;
+    }
+         
+    return null;
+    
+ 
 }    
     
 //public void search(){
@@ -180,9 +213,15 @@ public List<Person> search6() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         List<Person> list=new ArrayList<>();
         try{
-        final java.sql.Date dateIn1 = new java.sql.Date(format.parse(start_date).getTime());
-        final java.sql.Date dateIn2 = new java.sql.Date(format.parse(end_date).getTime());
+           
+//        final java.sql.Date dateIn1 =new java.sql.Date(start_date.getTime());
+//         
+//        final java.sql.Date dateIn2 =new java.sql.Date(end_date.getTime());
 
+            final java.sql.Date dateIn1 =toSqlDate(start_date);
+         final java.sql.Date dateIn2 =toSqlDate(ender_date);
+        System.out.println("Inside stry");
+           System.out.println("search6() called" +"date1="+dateIn1);
         
                 list= persons.stream().filter((person)->{return (//person.getId()>100
                 person.getDate().after(dateIn1)
@@ -343,6 +382,10 @@ public void reload(){
         }
     
 }
+
+
+
+
 
   
 }
